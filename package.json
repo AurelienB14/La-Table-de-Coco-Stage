@@ -4,7 +4,9 @@
   "description": "Site vitrine statique du restaurant La Table de Coco (Saint Christol-les-Ales)",
   "private": true,
   "scripts": {
+    "build:html": "node ./scripts/build-html.js",
     "build:css": "tailwindcss -i ./src/input.css -o ./assets/css/style.css --minify",
+    "build": "npm run build:html && npm run build:css",
     "watch:css": "tailwindcss -i ./src/input.css -o ./assets/css/style.css --watch",
     "serve": "npx --yes serve ."
   },

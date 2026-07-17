@@ -110,3 +110,16 @@
     @apply text-accent-300;
   }
 }
+
+/* Written outside @layer: Tailwind's content-based tree-shaking purges
+   unused-looking selectors from @layer blocks (including hand-written
+   ones like .is-active, which never appears as a literal class in any
+   scanned HTML file since it's only added by assets/js/include.js at
+   runtime). Kept as plain CSS so it always ships, with a selector
+   specific enough (attribute + class) to outrank the plain utility
+   classes on nav links (text-ink / border-transparent) regardless of
+   utility source order. */
+a[data-nav-link].is-active {
+  color: theme('colors.accent.700');
+  border-color: theme('colors.accent.500');
+}

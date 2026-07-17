@@ -1,14 +1,15 @@
 /**
- * Loads partials/nav.html and partials/footer.html into their placeholder
- * elements, then wires up the mobile hamburger menu and the active-link
- * highlight. Runs on plain static hosting (Netlify, Hostinger) with no
- * build step.
+ * Nav/footer markup is inlined into each page at build time (see
+ * scripts/build-html.js) so it's present in the raw HTML for crawlers that
+ * don't run JavaScript. This script only wires up interactive behaviour on
+ * top of that already-rendered markup: the mobile hamburger menu and the
+ * active-page highlight in the nav.
  */
 (function () {
   function markActiveLink(root, page) {
     root.querySelectorAll('[data-nav-link]').forEach(function (link) {
       if (link.getAttribute('data-nav-link') === page) {
-        link.classList.add('text-accent-700', 'border-accent-500');
+        link.classList.add('is-active');
         link.setAttribute('aria-current', 'page');
       }
     });
@@ -33,24 +34,9 @@
     });
   }
 
-  function loadInclude(el) {
-    var src = el.getAttribute('data-include');
-    return fetch(src)
-      .then(function (res) {
-        return res.text();
-      })
-      .then(function (html) {
-        el.outerHTML = html;
-      });
-  }
-
   document.addEventListener('DOMContentLoaded', function () {
     var page = document.body.getAttribute('data-page') || '';
-    var includes = Array.prototype.slice.call(document.querySelectorAll('[data-include]'));
-
-    Promise.all(includes.map(loadInclude)).then(function () {
-      markActiveLink(document, page);
-      wireMobileNav(document);
-    });
+    markActiveLink(document, page);
+    wireMobileNav(document);
   });
 })();

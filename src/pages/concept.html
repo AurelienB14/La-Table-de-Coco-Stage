@@ -28,31 +28,7 @@
 </head>
 <body data-page="concept" class="bg-bg text-ink font-body">
 
-<header class="sticky top-0 z-50 bg-bg border-b divider">
-  <div class="max-w-[1180px] mx-auto flex items-center justify-between px-5 py-3.5 md:px-6 md:py-[18px]">
-    <a href="index.html" class="font-heading italic font-semibold text-xl md:text-2xl text-ink no-underline tracking-tight">La Table de Coco</a>
-
-    <nav class="hidden md:flex items-center gap-6" aria-label="Navigation principale">
-      <a data-nav-link="accueil" href="index.html" class="font-body text-sm font-semibold no-underline pb-1 border-b-2 border-transparent text-ink">Accueil</a>
-      <a data-nav-link="ardoise" href="ardoise.html" class="font-body text-sm font-semibold no-underline pb-1 border-b-2 border-transparent text-ink">Notre ardoise</a>
-      <a data-nav-link="concept" href="concept.html" class="font-body text-sm font-semibold no-underline pb-1 border-b-2 border-transparent text-ink">Notre concept</a>
-      <a data-nav-link="contact" href="contact.html" class="font-body text-sm font-semibold no-underline pb-1 border-b-2 border-transparent text-ink">Contact &amp; Accès</a>
-    </nav>
-
-    <button id="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-mobile" class="md:hidden w-11 h-11 flex flex-col items-center justify-center gap-1.5 bg-transparent border-0 cursor-pointer">
-      <span class="w-[22px] h-0.5 bg-ink block"></span>
-      <span class="w-[22px] h-0.5 bg-ink block"></span>
-      <span class="w-[22px] h-0.5 bg-ink block"></span>
-    </button>
-  </div>
-
-  <nav id="nav-mobile" aria-label="Navigation mobile" class="hidden md:hidden flex-col gap-0.5 bg-bg border-t divider px-6 pb-6 pt-2">
-    <a data-nav-link="accueil" href="index.html" class="font-body text-base font-semibold no-underline py-3.5 border-b divider text-ink">Accueil</a>
-    <a data-nav-link="ardoise" href="ardoise.html" class="font-body text-base font-semibold no-underline py-3.5 border-b divider text-ink">Notre ardoise</a>
-    <a data-nav-link="concept" href="concept.html" class="font-body text-base font-semibold no-underline py-3.5 border-b divider text-ink">Notre concept</a>
-    <a data-nav-link="contact" href="contact.html" class="font-body text-base font-semibold no-underline py-3.5 text-ink">Contact &amp; Accès</a>
-  </nav>
-</header>
+<!-- INCLUDE:nav -->
 
 <main>
   <section class="relative h-[460px] md:h-[560px] overflow-hidden">
@@ -121,35 +97,7 @@
   </section>
 </main>
 
-<footer class="site-footer bg-olive-900 text-stone-100 px-6 pt-14 pb-8">
-  <div class="max-w-[1180px] mx-auto grid gap-10" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
-    <div>
-      <div class="font-heading italic text-2xl mb-3">La Table de Coco</div>
-      <p class="opacity-75 text-sm leading-relaxed">Burgers maison &amp; planches corses, en famille, à Saint Christol-lès-Alès.</p>
-    </div>
-    <div>
-      <div class="text-xs tracking-wide uppercase opacity-60 mb-3">Adresse</div>
-      <p class="text-sm leading-relaxed opacity-90">40 avenue du Général de Gaulle<br>30380 Saint Christol-lès-Alès</p>
-      <a href="https://www.google.com/maps/dir/?api=1&amp;destination=40%20avenue%20du%20g%C3%A9n%C3%A9ral%20de%20Gaulle%2C%2030380%20Saint%20Christol-l%C3%A8s-Al%C3%A8s" target="_blank" rel="noopener" class="text-sm">Itinéraire GPS</a>
-    </div>
-    <div>
-      <div class="text-xs tracking-wide uppercase opacity-60 mb-3">Horaires</div>
-      <p class="text-sm leading-relaxed opacity-90">Du mardi au samedi, uniquement le soir<br>Sur place 19h&ndash;20h15 &middot; À emporter 19h&ndash;21h (21h30 ven-sam)<br>Fermé dimanche &amp; lundi</p>
-    </div>
-    <div>
-      <div class="text-xs tracking-wide uppercase opacity-60 mb-3">Contact</div>
-      <p class="text-sm leading-relaxed">
-        <a href="tel:0603613087">06 03 61 30 87</a><br>
-        <a href="mailto:ltc.latabledecoco@gmail.com">ltc.latabledecoco@gmail.com</a>
-      </p>
-      <div class="flex gap-3.5 mt-4">
-        <a href="https://www.facebook.com/tabledecoco" target="_blank" rel="noopener">Facebook</a>
-        <a href="https://www.instagram.com/la_table_de_coco/" target="_blank" rel="noopener">Instagram</a>
-      </div>
-    </div>
-  </div>
-  <div class="max-w-[1180px] mx-auto mt-8 pt-6 text-xs opacity-55" style="border-top:1px solid rgba(250,247,240,0.18)">&copy; 2026 La Table de Coco &mdash; Fait avec cœur en famille.</div>
-</footer>
+<!-- INCLUDE:footer -->
 
 <script src="assets/js/include.js"></script>
 </body>

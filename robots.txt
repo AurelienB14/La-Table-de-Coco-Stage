@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.latabledecoco.fr/sitemap.xml
+Sitemap: https://www.latabledecoco.com/sitemap.xml
