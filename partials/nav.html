@@ -1,0 +1,25 @@
+<header class="sticky top-0 z-50 bg-bg border-b divider">
+  <div class="max-w-[1180px] mx-auto flex items-center justify-between px-5 py-3.5 md:px-6 md:py-4.5">
+    <a href="index.html" class="font-heading italic font-semibold text-xl md:text-2xl text-ink no-underline tracking-tight">La Table de Coco</a>
+
+    <nav class="hidden md:flex items-center gap-6" aria-label="Navigation principale">
+      <a data-nav-link="accueil" href="index.html" class="font-body text-sm font-semibold no-underline pb-1 border-b-2 border-transparent text-ink">Accueil</a>
+      <a data-nav-link="ardoise" href="ardoise.html" class="font-body text-sm font-semibold no-underline pb-1 border-b-2 border-transparent text-ink">Notre ardoise</a>
+      <a data-nav-link="concept" href="concept.html" class="font-body text-sm font-semibold no-underline pb-1 border-b-2 border-transparent text-ink">Notre concept</a>
+      <a data-nav-link="contact" href="contact.html" class="font-body text-sm font-semibold no-underline pb-1 border-b-2 border-transparent text-ink">Contact &amp; Accès</a>
+    </nav>
+
+    <button id="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-mobile" class="md:hidden w-11 h-11 flex flex-col items-center justify-center gap-1.5 bg-transparent border-0 cursor-pointer">
+      <span class="w-5.5 h-0.5 bg-ink block"></span>
+      <span class="w-5.5 h-0.5 bg-ink block"></span>
+      <span class="w-5.5 h-0.5 bg-ink block"></span>
+    </button>
+  </div>
+
+  <nav id="nav-mobile" aria-label="Navigation mobile" class="hidden md:hidden flex-col gap-0.5 bg-bg border-t divider px-6 pb-6 pt-2">
+    <a data-nav-link="accueil" href="index.html" class="font-body text-base font-semibold no-underline py-3.5 border-b divider text-ink">Accueil</a>
+    <a data-nav-link="ardoise" href="ardoise.html" class="font-body text-base font-semibold no-underline py-3.5 border-b divider text-ink">Notre ardoise</a>
+    <a data-nav-link="concept" href="concept.html" class="font-body text-base font-semibold no-underline py-3.5 border-b divider text-ink">Notre concept</a>
+    <a data-nav-link="contact" href="contact.html" class="font-body text-base font-semibold no-underline py-3.5 text-ink">Contact &amp; Accès</a>
+  </nav>
+</header>

@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-bg text-ink font-body;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+  }
+  a {
+    @apply text-accent-700;
+  }
+  a:hover {
+    @apply text-accent-800;
+  }
+  img {
+    display: block;
+    max-width: 100%;
+  }
+  :focus-visible {
+    outline: 2px solid theme('colors.accent.500');
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .divider {
+    border-color: rgba(46, 43, 31, 0.16);
+  }
+  .hr {
+    height: 1px;
+    border: 0;
+    margin: 18px 0;
+    background: rgba(46, 43, 31, 0.16);
+  }
+  .text-muted {
+    color: rgba(46, 43, 31, 0.6);
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-1.5 cursor-pointer no-underline font-heading text-sm rounded-full border border-transparent transition-colors;
+    padding: 13px 28px;
+  }
+  .btn-primary {
+    @apply bg-accent-500 text-bg;
+  }
+  .btn-primary:hover {
+    @apply bg-accent-600;
+  }
+  .btn-primary:active {
+    @apply bg-accent-700;
+  }
+  .btn-secondary {
+    border-color: rgba(46, 43, 31, 0.16);
+    @apply text-ink;
+  }
+  .btn-secondary:hover {
+    background: rgba(46, 43, 31, 0.07);
+  }
+  .btn-ghost {
+    @apply text-accent-700 px-1;
+  }
+  .btn-ghost:hover {
+    background: rgba(201, 161, 93, 0.1);
+  }
+
+  .tag {
+    @apply inline-flex items-center text-[11px] tracking-wide rounded-full;
+    padding: 4px 12px;
+  }
+  .tag-accent {
+    @apply bg-accent-100 text-accent-800;
+  }
+  .tag-olive {
+    @apply bg-olive-100 text-olive-900;
+  }
+  .tag-outline {
+    @apply border border-accent-500 text-accent-700;
+  }
+  .tag-neutral {
+    @apply bg-stone-100 text-stone-800;
+  }
+
+  .card {
+    @apply flex flex-col gap-2 rounded-lg bg-surface p-5;
+  }
+  .card-title {
+    @apply font-heading text-xl;
+  }
+  .card-body {
+    @apply text-sm opacity-80;
+  }
+  .elev-sm {
+    @apply shadow-sm;
+  }
+  .elev-md {
+    @apply shadow-md;
+  }
+
+  .site-footer a {
+    @apply text-stone-100 no-underline;
+  }
+  .site-footer a:hover {
+    @apply text-accent-300;
+  }
+}

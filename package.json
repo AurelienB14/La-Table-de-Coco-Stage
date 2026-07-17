@@ -1,0 +1,17 @@
+{
+  "name": "la-table-de-coco",
+  "version": "1.0.0",
+  "description": "Site vitrine statique du restaurant La Table de Coco (Saint Christol-les-Ales)",
+  "private": true,
+  "scripts": {
+    "build:css": "tailwindcss -i ./src/input.css -o ./assets/css/style.css --minify",
+    "watch:css": "tailwindcss -i ./src/input.css -o ./assets/css/style.css --watch",
+    "serve": "npx --yes serve ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "tailwindcss": "^3.4.19"
+  }
+}
