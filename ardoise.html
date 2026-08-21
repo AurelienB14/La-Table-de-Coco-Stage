@@ -209,10 +209,14 @@
         <circle cx="20" cy="26" r="2.4"/><circle cx="278" cy="14" r="2.6"/>
       </g>
     </symbol>
-    <symbol id="ing-egg" viewBox="0 0 300 44">
-      <path d="M4,20 C0,4 60,-4 150,2 C240,-4 300,4 296,20 C300,36 240,46 150,42 C60,46 0,36 4,20 Z" fill="url(#grad-egg-white)"/>
-      <circle cx="150" cy="21" r="14" fill="url(#grad-egg-yolk)"/>
-      <circle cx="144" cy="15" r="4" fill="#FCE3A0" opacity="0.85"/>
+    <symbol id="ing-egg" viewBox="0 0 300 34">
+      <!-- Aplati par rapport à l'original (viewBox 44 -> 34, jaune rond ->
+           ovale) : dans une bande fine, un jaune parfaitement rond était
+           rogné en bas alors que les autres ingrédients (plus plats de
+           nature) ne l'étaient pas. -->
+      <path d="M4,15.5 C0,3.1 60,-3.1 150,1.5 C240,-3.1 300,3.1 296,15.5 C300,27.8 240,35.5 150,32.5 C60,35.5 0,27.8 4,15.5 Z" fill="url(#grad-egg-white)"/>
+      <ellipse cx="150" cy="16.2" rx="14" ry="9" fill="url(#grad-egg-yolk)"/>
+      <ellipse cx="144" cy="11.6" rx="4" ry="2.6" fill="#FCE3A0" opacity="0.85"/>
     </symbol>
     <symbol id="ing-onion" viewBox="0 0 300 30">
       <rect x="0" y="9" width="300" height="12" rx="6" fill="url(#grad-onion)"/>
@@ -464,10 +468,10 @@
      remplie dynamiquement par assets/js/burger-stack.js selon le
      data-burger cliqué. -->
 <div id="burger-modal-backdrop" class="hidden fixed inset-0 z-[1000] items-center justify-center p-4 md:p-8" style="background:rgba(20,16,10,0.6)">
-  <div id="burger-modal-panel" class="burger-modal-panel relative w-full max-w-[92vw] md:max-w-[720px] max-h-[85vh] overflow-y-auto rounded-[24px] bg-bg elev-md p-5 md:p-9" role="dialog" aria-modal="true" aria-labelledby="burger-modal-title">
+  <div id="burger-modal-panel" class="burger-modal-panel relative w-full max-w-[92vw] md:max-w-[720px] max-h-[85vh] overflow-y-auto rounded-[24px] bg-bg elev-md px-7 py-5 md:px-9 md:py-9" role="dialog" aria-modal="true" aria-labelledby="burger-modal-title">
     <button type="button" id="burger-modal-close" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-ink/80 text-white flex items-center justify-center text-lg leading-none cursor-pointer hover:bg-ink" aria-label="Fermer la composition">&times;</button>
-    <div id="burger-modal-header" class="mb-4">
-      <h3 id="burger-modal-title" class="font-heading italic text-[26px] m-0 pr-10"></h3>
+    <div id="burger-modal-header" class="mb-2.5 md:mb-4">
+      <h3 id="burger-modal-title" class="font-heading italic text-base md:text-2xl m-0 pr-9 md:pr-10 whitespace-nowrap overflow-hidden text-ellipsis"></h3>
     </div>
     <div id="burger-modal-layers" class="flex flex-col"></div>
   </div>

@@ -95,7 +95,7 @@
     poulet: '0 0 300 50',
     charcuterie: '0 0 300 46',
     cheese: '0 0 300 40',
-    egg: '0 0 300 44',
+    egg: '0 0 300 34',
     onion: '0 0 300 30',
     lettuce: '0 0 300 34',
     chutney: '0 0 300 26',
@@ -112,37 +112,56 @@
 
   if (!backdrop || !panelEl || !headerEl || !closeBtn || !titleEl || !layersEl) return;
 
+  // Le panneau est nettement plus étroit sur mobile (max-w-[92vw]) que sur
+  // desktop (md:max-w-[720px]), mais le budget de hauteur ci-dessous était
+  // calculé uniquement à partir de la hauteur de viewport — sans lien avec
+  // cette largeur. Résultat : des couches presque aussi hautes que sur
+  // desktop, empilées dans un cadre beaucoup plus étroit, donc un
+  // empilement démesurément haut et étiré verticalement sur mobile. On
+  // utilise donc des réglages plus resserrés en dessous du breakpoint "md"
+  // de Tailwind (768px), pour que les proportions largeur/hauteur de la
+  // pile se rapprochent de celles du rendu desktop.
+  var MEDIA_MD = window.matchMedia('(min-width: 768px)');
+
   // Doit rester en phase avec la classe Tailwind "max-h-[85vh]" du panneau.
-  var PANEL_MAX_VH_RATIO = 0.85;
+  var PANEL_MAX_VH_RATIO_DESKTOP = 0.85;
+  var PANEL_MAX_VH_RATIO_MOBILE = 0.42;
   // Le gap entre couches est une fraction de la hauteur de couche, donc il
   // se réduit lui aussi proportionnellement pour les burgers à plus
   // d'ingrédients (voir computeLayerSizing).
-  var GAP_RATIO = 0.16;
-  var MIN_LAYER_HEIGHT = 26;
-  var MAX_LAYER_HEIGHT = 92;
+  var GAP_RATIO_DESKTOP = 0.16;
+  var GAP_RATIO_MOBILE = 0.1;
+  var MIN_LAYER_HEIGHT_DESKTOP = 26;
+  var MIN_LAYER_HEIGHT_MOBILE = 18;
+  var MAX_LAYER_HEIGHT_DESKTOP = 92;
+  // Plafonné pour que le rapport hauteur de couche / largeur totale reste
+  // proche de celui du desktop (~0.15-0.17) plutôt que ~0.28 comme avant :
+  // le panneau mobile est beaucoup plus étroit, donc des couches aussi
+  // hautes que sur desktop y paraissaient disproportionnées.
+  var MAX_LAYER_HEIGHT_MOBILE = 24;
 
   function layerRow(item, delayMs, heightPx) {
     var viewBox = SYMBOL_VIEWBOX[item.symbol] || '0 0 300 40';
     return (
       '<div class="bstack-layer flex items-center gap-3 md:gap-4" style="animation-delay:' + delayMs + 'ms">' +
       /* Largeur fixe (identique pour toutes les couches, quel que soit
-         l'ingrédient) via calc(100% - largeur légende - gap). Hauteur fixe
-         elle aussi, calculée dynamiquement (voir computeLayerSizing) pour
-         que l'empilement complet tienne sans scroll. Avec un cadre
-         width x height fixé sur les deux axes, preserveAspectRatio="meet"
-         (le comportement précédent) rétrécit l'illustration jusqu'à ce
-         qu'elle tienne aussi en hauteur, ce qui la rendait plus étroite
-         que le cadre pour les ingrédients au dessin plus haut (le pain
-         notamment) : largeur du cadre uniforme, mais dessin visible plus
-         petit. "slice" scale au contraire l'illustration pour qu'elle
-         remplisse tout le cadre (quitte à rogner un peu le haut/bas), donc
-         la largeur RÉELLEMENT VISIBLE est toujours exactement celle du
-         cadre commun, sans jamais étirer le dessin de façon non uniforme
-         (le rapport largeur/hauteur interne du dessin reste inchangé, seul
-         le cadrage change). */
-      '<svg viewBox="' + viewBox + '" preserveAspectRatio="xMidYMid slice" style="height:' + heightPx + 'px" class="flex-none w-[calc(100%_-_132px)] md:w-[calc(100%_-_166px)]" role="presentation" focusable="false">' +
+         l'ingrédient) via calc(100% - largeur légende - gap), portée par ce
+         conteneur, pas par le <svg> lui-même. Le <svg> ne reçoit qu'une
+         largeur ("w-full") et une hauteur automatique ("h-auto") : il se
+         dessine donc toujours à son échelle naturelle, sans jamais étirer
+         NI rogner ses motifs internes sur les côtés (anneaux d'oignons,
+         ronds de lard, points de fromage...) — un seul axe est contraint,
+         donc aucune ambiguïté de mise à l'échelle possible sur l'autre.
+         Le conteneur a la hauteur fixe calculée dynamiquement (voir
+         computeLayerSizing, pour que l'empilement tienne sans scroll) et
+         "overflow:hidden" : si le dessin est naturellement plus haut que
+         cette hauteur (le pain par exemple), seul un rognage vertical,
+         centré, peut se produire — jamais horizontal. */
+      '<div class="flex-none w-[calc(100%_-_132px)] md:w-[calc(100%_-_166px)] overflow-hidden flex items-center justify-center" style="height:' + heightPx + 'px">' +
+      '<svg viewBox="' + viewBox + '" class="w-full h-auto block" role="presentation" focusable="false">' +
       '<use href="#ing-' + item.symbol + '"></use>' +
       '</svg>' +
+      '</div>' +
       '<span class="flex-none w-[120px] md:w-[150px] text-[11px] md:text-[13px] font-semibold text-ink/80 leading-tight">' + item.label + '</span>' +
       '</div>'
     );
@@ -157,7 +176,13 @@
    * de hauteur total.
    */
   function computeLayerSizing(layerCount) {
-    var viewportBudget = window.innerHeight * PANEL_MAX_VH_RATIO;
+    var isDesktop = MEDIA_MD.matches;
+    var vhRatio = isDesktop ? PANEL_MAX_VH_RATIO_DESKTOP : PANEL_MAX_VH_RATIO_MOBILE;
+    var gapRatio = isDesktop ? GAP_RATIO_DESKTOP : GAP_RATIO_MOBILE;
+    var minLayerHeight = isDesktop ? MIN_LAYER_HEIGHT_DESKTOP : MIN_LAYER_HEIGHT_MOBILE;
+    var maxLayerHeight = isDesktop ? MAX_LAYER_HEIGHT_DESKTOP : MAX_LAYER_HEIGHT_MOBILE;
+
+    var viewportBudget = window.innerHeight * vhRatio;
     var panelStyles = getComputedStyle(panelEl);
     var padTop = parseFloat(panelStyles.paddingTop) || 0;
     var padBottom = parseFloat(panelStyles.paddingBottom) || 0;
@@ -171,13 +196,13 @@
     var SAFETY_MARGIN = 14;
 
     var available = viewportBudget - padTop - padBottom - headerHeight - SAFETY_MARGIN;
-    available = Math.max(available, MIN_LAYER_HEIGHT * layerCount);
+    available = Math.max(available, minLayerHeight * layerCount);
 
-    // total = n*h + (n-1)*gap, avec gap = GAP_RATIO*h
-    var denom = layerCount + (layerCount - 1) * GAP_RATIO;
+    // total = n*h + (n-1)*gap, avec gap = gapRatio*h
+    var denom = layerCount + (layerCount - 1) * gapRatio;
     var layerHeight = available / denom;
-    layerHeight = Math.max(MIN_LAYER_HEIGHT, Math.min(MAX_LAYER_HEIGHT, Math.round(layerHeight)));
-    var gap = Math.max(2, Math.round(layerHeight * GAP_RATIO));
+    layerHeight = Math.max(minLayerHeight, Math.min(maxLayerHeight, Math.round(layerHeight)));
+    var gap = Math.max(2, Math.round(layerHeight * gapRatio));
 
     return { layerHeight: layerHeight, gap: gap };
   }
