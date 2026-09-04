@@ -11,8 +11,9 @@
  * Les libellés d'ingrédients sont recopiés tels quels depuis le texte
  * existant de chaque burger sur la page (avec les exposants d'allergènes).
  * Plusieurs burgers partagent le même symbole (ex: "onion" pour tous les
- * "Oignons¹", "cheese" pour tous les fromages) : l'illustration n'est
- * dessinée qu'une fois dans le <defs> SVG et seulement référencée ici.
+ * "Oignons rouges¹", "cheese" pour tous les fromages) : l'illustration
+ * n'est dessinée qu'une fois dans le <defs> SVG et seulement référencée
+ * ici.
  */
 (function () {
   var BURGERS = {
@@ -21,9 +22,9 @@
       ingredients: [
         { label: 'Steak haché frais²', symbol: 'steak' },
         { label: 'Cheddar', symbol: 'cheese' },
-        { label: 'Lard fumé', symbol: 'charcuterie' },
+        { label: 'Lard fumé au bois d’hêtre', symbol: 'charcuterie' },
         { label: 'Œuf', symbol: 'egg' },
-        { label: 'Oignons¹', symbol: 'onion' },
+        { label: 'Oignons rouges¹', symbol: 'onion' },
       ],
     },
     maquis: {
@@ -33,7 +34,7 @@
         { label: 'Fromage corse', symbol: 'cheese' },
         { label: 'Charcuterie corse', symbol: 'charcuterie' },
         { label: 'Chutney de figues', symbol: 'chutney' },
-        { label: 'Oignons¹', symbol: 'onion' },
+        { label: 'Oignons rouges¹', symbol: 'onion' },
       ],
     },
     boncheese: {
@@ -41,8 +42,8 @@
       ingredients: [
         { label: 'Steak haché frais²', symbol: 'steak' },
         { label: 'Cheddar', symbol: 'cheese' },
-        { label: 'Lard fumé grillé ou charcuterie corse', symbol: 'charcuterie' },
-        { label: 'Oignons¹', symbol: 'onion' },
+        { label: 'Lard fumé au bois d’hêtre grillé ou charcuterie corse', symbol: 'charcuterie' },
+        { label: 'Oignons rouges¹', symbol: 'onion' },
       ],
     },
     coco: {
@@ -50,8 +51,8 @@
       ingredients: [
         { label: 'Poulet pané croustillant³', symbol: 'poulet' },
         { label: 'Cheddar', symbol: 'cheese' },
-        { label: 'Lard fumé grillé', symbol: 'charcuterie' },
-        { label: 'Oignons¹', symbol: 'onion' },
+        { label: 'Lard fumé au bois d’hêtre grillé', symbol: 'charcuterie' },
+        { label: 'Oignons rouges¹', symbol: 'onion' },
       ],
     },
     vege: {
@@ -60,7 +61,7 @@
         { label: 'Galette de pomme de terre³', symbol: 'galette' },
         { label: 'Fromage au choix', symbol: 'cheese' },
         { label: 'Salade', symbol: 'lettuce' },
-        { label: 'Oignons¹', symbol: 'onion' },
+        { label: 'Oignons rouges¹', symbol: 'onion' },
       ],
     },
     raclette: {
@@ -70,7 +71,7 @@
         { label: 'Galette de pomme de terre³', symbol: 'galette' },
         { label: 'Fromage à raclette', symbol: 'cheese' },
         { label: 'Charcuterie corse', symbol: 'charcuterie' },
-        { label: 'Oignons¹', symbol: 'onion' },
+        { label: 'Oignons rouges¹', symbol: 'onion' },
       ],
     },
     cevenol: {
@@ -80,13 +81,18 @@
         { label: 'Galette de pomme de terre³', symbol: 'galette' },
         { label: 'Fromage de chèvre des Cévennes', symbol: 'cheese' },
         { label: 'Charcuterie corse', symbol: 'charcuterie' },
-        { label: 'Oignons¹', symbol: 'onion' },
+        { label: 'Oignons rouges¹', symbol: 'onion' },
       ],
     },
   };
 
-  var BUN_TOP = { label: 'Pain du dessus', symbol: 'bun-top' };
-  var BUN_BOTTOM = { label: 'Pain du dessous', symbol: 'bun-bottom' };
+  var BUN_TOP = { label: 'Pain du boulanger', symbol: 'bun-top' };
+  var BUN_BOTTOM = { label: 'Pain du boulanger', symbol: 'bun-bottom' };
+  // Commune à tous les burgers, ajoutée juste au-dessus du pain du bas
+  // (donc juste après la viande/protéine) directement dans l'empilement
+  // (voir openBurger), plutôt que répétée dans chaque entrée de BURGERS
+  // ci-dessus : impossible de l'oublier sur un burger.
+  var SAUCE = { label: 'Sauce au choix', symbol: 'sauce' };
 
   var SYMBOL_VIEWBOX = {
     'bun-top': '0 0 300 50',
@@ -100,6 +106,7 @@
     lettuce: '0 0 300 34',
     chutney: '0 0 300 26',
     galette: '0 0 300 40',
+    sauce: '0 0 300 20',
   };
 
   var backdrop = document.getElementById('burger-modal-backdrop');
@@ -215,7 +222,7 @@
     // On inverse donc l'ordre des ingrédients entre les deux pains, qui
     // restent fixes en haut et en bas.
     var reversedIngredients = burger.ingredients.slice().reverse();
-    var stack = [BUN_TOP].concat(reversedIngredients, [BUN_BOTTOM]);
+    var stack = [BUN_TOP].concat(reversedIngredients, [SAUCE], [BUN_BOTTOM]);
     var step = 70;
     var n = stack.length;
 

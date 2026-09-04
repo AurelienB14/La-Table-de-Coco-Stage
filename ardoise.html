@@ -126,8 +126,8 @@
       <stop offset="100%" stop-color="#D98A1E"/>
     </radialGradient>
     <linearGradient id="grad-onion" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#FAFAF3"/>
-      <stop offset="100%" stop-color="#E4E4D2"/>
+      <stop offset="0%" stop-color="#E9D6E5"/>
+      <stop offset="100%" stop-color="#C79BC0"/>
     </linearGradient>
     <linearGradient id="grad-lettuce" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#C4C6A2"/>
@@ -141,6 +141,10 @@
       <stop offset="0%" stop-color="#D4A76A"/>
       <stop offset="100%" stop-color="#96703A"/>
     </radialGradient>
+    <linearGradient id="grad-sauce" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E8935A"/>
+      <stop offset="100%" stop-color="#C46B35"/>
+    </linearGradient>
 
     <symbol id="ing-bun-top" viewBox="0 0 300 50">
       <path d="M2,50 C2,20.3 40,4.1 90,2.7 C130,1.4 170,1.4 210,2.7 C260,4.1 298,20.3 298,50 Z" fill="url(#grad-bun-top)"/>
@@ -219,15 +223,17 @@
       <ellipse cx="144" cy="11.6" rx="4" ry="2.6" fill="#FCE3A0" opacity="0.85"/>
     </symbol>
     <symbol id="ing-onion" viewBox="0 0 300 30">
+      <!-- Oignon ROUGE : même forme en anneaux qu'avant, palette
+           violette/pourpre plutôt que vert-de-gris. -->
       <rect x="0" y="9" width="300" height="12" rx="6" fill="url(#grad-onion)"/>
-      <g fill="none" stroke="#8A8B5C" stroke-width="1.4" opacity="0.85">
+      <g fill="none" stroke="#7D3F72" stroke-width="1.4" opacity="0.85">
         <ellipse cx="36" cy="15" rx="15" ry="8.5"/>
         <ellipse cx="92" cy="15" rx="15" ry="8.5"/>
         <ellipse cx="148" cy="15" rx="15" ry="8.5"/>
         <ellipse cx="204" cy="15" rx="15" ry="8.5"/>
         <ellipse cx="260" cy="15" rx="14" ry="8"/>
       </g>
-      <g fill="none" stroke="#C4C6A2" stroke-width="1" opacity="0.7">
+      <g fill="none" stroke="#B679AC" stroke-width="1" opacity="0.7">
         <ellipse cx="36" cy="15" rx="8" ry="4.5"/>
         <ellipse cx="92" cy="15" rx="8" ry="4.5"/>
         <ellipse cx="148" cy="15" rx="8" ry="4.5"/>
@@ -263,6 +269,13 @@
         <circle cx="70" cy="28" r="1.6"/><circle cx="130" cy="30" r="1.6"/><circle cx="190" cy="28" r="1.6"/><circle cx="240" cy="30" r="1.6"/>
       </g>
     </symbol>
+    <symbol id="ing-sauce" viewBox="0 0 300 20">
+      <!-- Fine bande de nappage/coulis, commune à tous les burgers : trait
+           en zigzag façon flacon souple, sur une base translucide. -->
+      <rect x="2" y="6" width="296" height="8" rx="4" fill="url(#grad-sauce)" opacity="0.25"/>
+      <path d="M6,10 Q20,2 34,10 T62,10 T90,10 T118,10 T146,10 T174,10 T202,10 T230,10 T258,10 T286,10" fill="none" stroke="url(#grad-sauce)" stroke-width="3.5" stroke-linecap="round"/>
+      <path d="M6,10 Q20,2 34,10 T62,10 T90,10 T118,10 T146,10 T174,10 T202,10 T230,10 T258,10 T286,10" fill="none" stroke="#F3C08A" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/>
+    </symbol>
 
     <!-- Icône (pas une photo) utilisée sur les emplacements cliquables de
          chaque burger, à la place de l'ancien carré vide : un simple
@@ -293,46 +306,66 @@
     <div class="mb-7">
       <div class="py-4 border-b divider">
         <div class="flex items-start gap-4">
-          <button type="button" class="burger-photo-slot flex-none w-16 h-16 rounded-lg bg-surface cursor-pointer transition-all hover:opacity-80 hover:scale-105 flex items-center justify-center text-accent-600" data-burger="bronx" aria-haspopup="dialog" aria-label="Voir la composition du burger Bronx"><svg viewBox="0 0 32 32" class="w-8 h-8" aria-hidden="true"><use href="#icon-burger"></use></svg></button>
+          <div class="flex flex-col items-center flex-none">
+            <button type="button" class="burger-photo-slot relative w-16 h-16 rounded-lg bg-surface border border-accent-300 cursor-pointer transition-all hover:opacity-80 hover:scale-105 hover:border-accent-500 flex items-center justify-center text-accent-600" data-burger="bronx" aria-haspopup="dialog" aria-label="Voir la composition du burger Bronx">
+              <svg viewBox="0 0 32 32" class="w-8 h-8" aria-hidden="true"><use href="#icon-burger"></use></svg>            </button>
+            <span class="mt-1 text-[9px] text-ink/55 text-center leading-tight w-16" aria-hidden="true">Voir la composition</span>
+          </div>
           <div class="flex-1 min-w-0">
             <div class="font-heading italic text-[19px] mb-1 uppercase tracking-wide">Bronx</div>
-            <div class="text-[13.5px] opacity-70 leading-relaxed">Steak haché frais² &middot; Cheddar &middot; Lard fumé &middot; Œuf &middot; Oignons¹</div>
+            <div class="text-[13.5px] opacity-70 leading-relaxed">Steak haché frais² &middot; Cheddar &middot; Lard fumé au bois d&rsquo;hêtre &middot; Œuf &middot; Oignons rouges¹</div>
           </div>
         </div>
       </div>
       <div class="py-4 border-b divider">
         <div class="flex items-start gap-4">
-          <button type="button" class="burger-photo-slot flex-none w-16 h-16 rounded-lg bg-surface cursor-pointer transition-all hover:opacity-80 hover:scale-105 flex items-center justify-center text-accent-600" data-burger="maquis" aria-haspopup="dialog" aria-label="Voir la composition du burger Maquis"><svg viewBox="0 0 32 32" class="w-8 h-8" aria-hidden="true"><use href="#icon-burger"></use></svg></button>
+          <div class="flex flex-col items-center flex-none">
+            <button type="button" class="burger-photo-slot relative w-16 h-16 rounded-lg bg-surface border border-accent-300 cursor-pointer transition-all hover:opacity-80 hover:scale-105 hover:border-accent-500 flex items-center justify-center text-accent-600" data-burger="maquis" aria-haspopup="dialog" aria-label="Voir la composition du burger Maquis">
+              <svg viewBox="0 0 32 32" class="w-8 h-8" aria-hidden="true"><use href="#icon-burger"></use></svg>            </button>
+            <span class="mt-1 text-[9px] text-ink/55 text-center leading-tight w-16" aria-hidden="true">Voir la composition</span>
+          </div>
           <div class="flex-1 min-w-0">
             <div class="font-heading italic text-[19px] mb-1 uppercase tracking-wide">Maquis</div>
-            <div class="text-[13.5px] opacity-70 leading-relaxed">Steak haché frais² &middot; Fromage corse &middot; Charcuterie corse &middot; Chutney de figues &middot; Oignons¹</div>
+            <div class="text-[13.5px] opacity-70 leading-relaxed">Steak haché frais² &middot; Fromage corse &middot; Charcuterie corse &middot; Chutney de figues &middot; Oignons rouges¹</div>
           </div>
         </div>
       </div>
       <div class="py-4 border-b divider">
         <div class="flex items-start gap-4">
-          <button type="button" class="burger-photo-slot flex-none w-16 h-16 rounded-lg bg-surface cursor-pointer transition-all hover:opacity-80 hover:scale-105 flex items-center justify-center text-accent-600" data-burger="boncheese" aria-haspopup="dialog" aria-label="Voir la composition du burger Bon Cheese"><svg viewBox="0 0 32 32" class="w-8 h-8" aria-hidden="true"><use href="#icon-burger"></use></svg></button>
+          <div class="flex flex-col items-center flex-none">
+            <button type="button" class="burger-photo-slot relative w-16 h-16 rounded-lg bg-surface border border-accent-300 cursor-pointer transition-all hover:opacity-80 hover:scale-105 hover:border-accent-500 flex items-center justify-center text-accent-600" data-burger="boncheese" aria-haspopup="dialog" aria-label="Voir la composition du burger Bon Cheese">
+              <svg viewBox="0 0 32 32" class="w-8 h-8" aria-hidden="true"><use href="#icon-burger"></use></svg>            </button>
+            <span class="mt-1 text-[9px] text-ink/55 text-center leading-tight w-16" aria-hidden="true">Voir la composition</span>
+          </div>
           <div class="flex-1 min-w-0">
             <div class="font-heading italic text-[19px] mb-1 uppercase tracking-wide">Bon Cheese</div>
-            <div class="text-[13.5px] opacity-70 leading-relaxed">Steak haché frais² &middot; Cheddar &middot; Lard fumé grillé ou charcuterie corse &middot; Oignons¹</div>
+            <div class="text-[13.5px] opacity-70 leading-relaxed">Steak haché frais² &middot; Cheddar &middot; Lard fumé au bois d&rsquo;hêtre grillé ou charcuterie corse &middot; Oignons rouges¹</div>
           </div>
         </div>
       </div>
       <div class="py-4 border-b divider">
         <div class="flex items-start gap-4">
-          <button type="button" class="burger-photo-slot flex-none w-16 h-16 rounded-lg bg-surface cursor-pointer transition-all hover:opacity-80 hover:scale-105 flex items-center justify-center text-accent-600" data-burger="coco" aria-haspopup="dialog" aria-label="Voir la composition du burger Coco"><svg viewBox="0 0 32 32" class="w-8 h-8" aria-hidden="true"><use href="#icon-burger"></use></svg></button>
+          <div class="flex flex-col items-center flex-none">
+            <button type="button" class="burger-photo-slot relative w-16 h-16 rounded-lg bg-surface border border-accent-300 cursor-pointer transition-all hover:opacity-80 hover:scale-105 hover:border-accent-500 flex items-center justify-center text-accent-600" data-burger="coco" aria-haspopup="dialog" aria-label="Voir la composition du burger Coco">
+              <svg viewBox="0 0 32 32" class="w-8 h-8" aria-hidden="true"><use href="#icon-burger"></use></svg>            </button>
+            <span class="mt-1 text-[9px] text-ink/55 text-center leading-tight w-16" aria-hidden="true">Voir la composition</span>
+          </div>
           <div class="flex-1 min-w-0">
             <div class="font-heading italic text-[19px] mb-1 uppercase tracking-wide">Coco</div>
-            <div class="text-[13.5px] opacity-70 leading-relaxed">Poulet pané croustillant³ &middot; Cheddar &middot; Lard fumé grillé &middot; Oignons¹</div>
+            <div class="text-[13.5px] opacity-70 leading-relaxed">Poulet pané croustillant³ &middot; Cheddar &middot; Lard fumé au bois d&rsquo;hêtre grillé &middot; Oignons rouges¹</div>
           </div>
         </div>
       </div>
       <div class="py-4 border-b divider">
         <div class="flex items-start gap-4">
-          <button type="button" class="burger-photo-slot flex-none w-16 h-16 rounded-lg bg-surface cursor-pointer transition-all hover:opacity-80 hover:scale-105 flex items-center justify-center text-accent-600" data-burger="vege" aria-haspopup="dialog" aria-label="Voir la composition du burger Végé"><svg viewBox="0 0 32 32" class="w-8 h-8" aria-hidden="true"><use href="#icon-burger"></use></svg></button>
+          <div class="flex flex-col items-center flex-none">
+            <button type="button" class="burger-photo-slot relative w-16 h-16 rounded-lg bg-surface border border-accent-300 cursor-pointer transition-all hover:opacity-80 hover:scale-105 hover:border-accent-500 flex items-center justify-center text-accent-600" data-burger="vege" aria-haspopup="dialog" aria-label="Voir la composition du burger Végé">
+              <svg viewBox="0 0 32 32" class="w-8 h-8" aria-hidden="true"><use href="#icon-burger"></use></svg>            </button>
+            <span class="mt-1 text-[9px] text-ink/55 text-center leading-tight w-16" aria-hidden="true">Voir la composition</span>
+          </div>
           <div class="flex-1 min-w-0">
             <div class="font-heading italic text-[19px] mb-1 uppercase tracking-wide">Végé</div>
-            <div class="text-[13.5px] opacity-70 leading-relaxed">Galette de pomme de terre³ &middot; Fromage au choix &middot; Salade &middot; Oignons¹</div>
+            <div class="text-[13.5px] opacity-70 leading-relaxed">Galette de pomme de terre³ &middot; Fromage au choix &middot; Salade &middot; Oignons rouges¹</div>
           </div>
         </div>
       </div>
@@ -342,19 +375,27 @@
     <div class="mb-6">
       <div class="py-4 border-b divider">
         <div class="flex items-start gap-4">
-          <button type="button" class="burger-photo-slot flex-none w-16 h-16 rounded-lg bg-surface cursor-pointer transition-all hover:opacity-80 hover:scale-105 flex items-center justify-center text-accent-600" data-burger="raclette" aria-haspopup="dialog" aria-label="Voir la composition du burger Raclette"><svg viewBox="0 0 32 32" class="w-8 h-8" aria-hidden="true"><use href="#icon-burger"></use></svg></button>
+          <div class="flex flex-col items-center flex-none">
+            <button type="button" class="burger-photo-slot relative w-16 h-16 rounded-lg bg-surface border border-accent-300 cursor-pointer transition-all hover:opacity-80 hover:scale-105 hover:border-accent-500 flex items-center justify-center text-accent-600" data-burger="raclette" aria-haspopup="dialog" aria-label="Voir la composition du burger Raclette">
+              <svg viewBox="0 0 32 32" class="w-8 h-8" aria-hidden="true"><use href="#icon-burger"></use></svg>            </button>
+            <span class="mt-1 text-[9px] text-ink/55 text-center leading-tight w-16" aria-hidden="true">Voir la composition</span>
+          </div>
           <div class="flex-1 min-w-0">
             <div class="font-heading italic text-[19px] mb-1 uppercase tracking-wide">Raclette</div>
-            <div class="text-[13.5px] opacity-70 leading-relaxed">Steak haché frais² &middot; Galette de pomme de terre³ &middot; Fromage à raclette &middot; Charcuterie corse &middot; Oignons¹</div>
+            <div class="text-[13.5px] opacity-70 leading-relaxed">Steak haché frais² &middot; Galette de pomme de terre³ &middot; Fromage à raclette &middot; Charcuterie corse &middot; Oignons rouges¹</div>
           </div>
         </div>
       </div>
       <div class="py-4 border-b divider">
         <div class="flex items-start gap-4">
-          <button type="button" class="burger-photo-slot flex-none w-16 h-16 rounded-lg bg-surface cursor-pointer transition-all hover:opacity-80 hover:scale-105 flex items-center justify-center text-accent-600" data-burger="cevenol" aria-haspopup="dialog" aria-label="Voir la composition du burger Cévenol"><svg viewBox="0 0 32 32" class="w-8 h-8" aria-hidden="true"><use href="#icon-burger"></use></svg></button>
+          <div class="flex flex-col items-center flex-none">
+            <button type="button" class="burger-photo-slot relative w-16 h-16 rounded-lg bg-surface border border-accent-300 cursor-pointer transition-all hover:opacity-80 hover:scale-105 hover:border-accent-500 flex items-center justify-center text-accent-600" data-burger="cevenol" aria-haspopup="dialog" aria-label="Voir la composition du burger Cévenol">
+              <svg viewBox="0 0 32 32" class="w-8 h-8" aria-hidden="true"><use href="#icon-burger"></use></svg>            </button>
+            <span class="mt-1 text-[9px] text-ink/55 text-center leading-tight w-16" aria-hidden="true">Voir la composition</span>
+          </div>
           <div class="flex-1 min-w-0">
             <div class="font-heading italic text-[19px] mb-1 uppercase tracking-wide">Cévenol</div>
-            <div class="text-[13.5px] opacity-70 leading-relaxed">Steak haché frais² &middot; Galette de pomme de terre³ &middot; Fromage de chèvre des Cévennes &middot; Charcuterie corse &middot; Oignons¹</div>
+            <div class="text-[13.5px] opacity-70 leading-relaxed">Steak haché frais² &middot; Galette de pomme de terre³ &middot; Fromage de chèvre des Cévennes &middot; Charcuterie corse &middot; Oignons rouges¹</div>
           </div>
         </div>
       </div>
@@ -461,7 +502,7 @@
       </div>
     </div>
   </div>
-  <div class="max-w-[1180px] mx-auto mt-8 pt-6 text-xs opacity-55" style="border-top:1px solid rgba(250,247,240,0.18)">&copy; 2026 La Table de Coco &mdash; Fait avec cœur en famille.</div>
+  <div class="max-w-[1180px] mx-auto mt-8 pt-6 text-xs opacity-55" style="border-top:1px solid rgba(250,247,240,0.18)">&copy; 2026 La Table de Coco &mdash; Fait par Aurélien Brochetta.</div>
 </footer>
 
 <!-- Modale unique de composition de burger : réutilisée pour les 7 burgers,
