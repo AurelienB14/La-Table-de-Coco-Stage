@@ -1,8 +1,4 @@
-/**
- * Petit carrousel/slideshow pour la section "Un nouveau local" de la page
- * Notre concept (.concept-carousel). Défilement automatique, flèches,
- * points de navigation et swipe tactile — vanilla JS, aucune dépendance.
- */
+// Carrousel de la section "Un nouveau local" (.concept-carousel).
 (function () {
   var root = document.querySelector('.concept-carousel');
   if (!root) return;

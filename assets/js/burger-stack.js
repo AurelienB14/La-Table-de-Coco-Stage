@@ -1,19 +1,7 @@
 /**
- * Modale "composition du burger" pour la page Notre ardoise.
- *
- * Une seule modale (voir #burger-modal-backdrop dans ardoise.html) est
- * réutilisée pour les 7 burgers : au clic sur un emplacement photo vide
- * (.burger-photo-slot, data-burger="..."), ce script construit la pile
- * d'illustrations à partir des données ci-dessous et de la bibliothèque de
- * symboles SVG définie dans ardoise.html (<symbol id="ing-...">), puis
- * l'affiche dans la modale.
- *
- * Les libellés d'ingrédients sont recopiés tels quels depuis le texte
- * existant de chaque burger sur la page (avec les exposants d'allergènes).
- * Plusieurs burgers partagent le même symbole (ex: "onion" pour tous les
- * "Oignons rouges¹", "cheese" pour tous les fromages) : l'illustration
- * n'est dessinée qu'une fois dans le <defs> SVG et seulement référencée
- * ici.
+ * Modale "composition du burger" : une seule instance (#burger-modal-backdrop
+ * dans ardoise.html), réutilisée pour les 7 burgers et remplie au clic à
+ * partir des données ci-dessous et des symboles SVG <symbol id="ing-...">.
  */
 (function () {
   var BURGERS = {
@@ -88,10 +76,8 @@
 
   var BUN_TOP = { label: 'Pain du boulanger', symbol: 'bun-top' };
   var BUN_BOTTOM = { label: 'Pain du boulanger', symbol: 'bun-bottom' };
-  // Commune à tous les burgers, ajoutée juste au-dessus du pain du bas
-  // (donc juste après la viande/protéine) directement dans l'empilement
-  // (voir openBurger), plutôt que répétée dans chaque entrée de BURGERS
-  // ci-dessus : impossible de l'oublier sur un burger.
+  // Ajoutée dans l'empilement (voir openBurger), pas dans BURGERS : commune
+  // à tous les burgers, impossible de l'oublier sur l'un d'eux.
   var SAUCE = { label: 'Sauce au choix', symbol: 'sauce' };
 
   var SYMBOL_VIEWBOX = {
@@ -119,51 +105,25 @@
 
   if (!backdrop || !panelEl || !headerEl || !closeBtn || !titleEl || !layersEl) return;
 
-  // Le panneau est nettement plus étroit sur mobile (max-w-[92vw]) que sur
-  // desktop (md:max-w-[720px]), mais le budget de hauteur ci-dessous était
-  // calculé uniquement à partir de la hauteur de viewport — sans lien avec
-  // cette largeur. Résultat : des couches presque aussi hautes que sur
-  // desktop, empilées dans un cadre beaucoup plus étroit, donc un
-  // empilement démesurément haut et étiré verticalement sur mobile. On
-  // utilise donc des réglages plus resserrés en dessous du breakpoint "md"
-  // de Tailwind (768px), pour que les proportions largeur/hauteur de la
-  // pile se rapprochent de celles du rendu desktop.
   var MEDIA_MD = window.matchMedia('(min-width: 768px)');
 
   // Doit rester en phase avec la classe Tailwind "max-h-[85vh]" du panneau.
   var PANEL_MAX_VH_RATIO_DESKTOP = 0.85;
   var PANEL_MAX_VH_RATIO_MOBILE = 0.42;
-  // Le gap entre couches est une fraction de la hauteur de couche, donc il
-  // se réduit lui aussi proportionnellement pour les burgers à plus
-  // d'ingrédients (voir computeLayerSizing).
   var GAP_RATIO_DESKTOP = 0.16;
   var GAP_RATIO_MOBILE = 0.1;
   var MIN_LAYER_HEIGHT_DESKTOP = 26;
   var MIN_LAYER_HEIGHT_MOBILE = 18;
   var MAX_LAYER_HEIGHT_DESKTOP = 92;
-  // Plafonné pour que le rapport hauteur de couche / largeur totale reste
-  // proche de celui du desktop (~0.15-0.17) plutôt que ~0.28 comme avant :
-  // le panneau mobile est beaucoup plus étroit, donc des couches aussi
-  // hautes que sur desktop y paraissaient disproportionnées.
   var MAX_LAYER_HEIGHT_MOBILE = 24;
 
   function layerRow(item, delayMs, heightPx) {
     var viewBox = SYMBOL_VIEWBOX[item.symbol] || '0 0 300 40';
     return (
       '<div class="bstack-layer flex items-center gap-3 md:gap-4" style="animation-delay:' + delayMs + 'ms">' +
-      /* Largeur fixe (identique pour toutes les couches, quel que soit
-         l'ingrédient) via calc(100% - largeur légende - gap), portée par ce
-         conteneur, pas par le <svg> lui-même. Le <svg> ne reçoit qu'une
-         largeur ("w-full") et une hauteur automatique ("h-auto") : il se
-         dessine donc toujours à son échelle naturelle, sans jamais étirer
-         NI rogner ses motifs internes sur les côtés (anneaux d'oignons,
-         ronds de lard, points de fromage...) — un seul axe est contraint,
-         donc aucune ambiguïté de mise à l'échelle possible sur l'autre.
-         Le conteneur a la hauteur fixe calculée dynamiquement (voir
-         computeLayerSizing, pour que l'empilement tienne sans scroll) et
-         "overflow:hidden" : si le dessin est naturellement plus haut que
-         cette hauteur (le pain par exemple), seul un rognage vertical,
-         centré, peut se produire — jamais horizontal. */
+      /* Le <svg> n'est contraint qu'en largeur (h-auto) : jamais étiré ni
+         rogné sur les côtés. Le conteneur porte la hauteur fixe +
+         overflow:hidden, donc un rognage éventuel reste vertical. */
       '<div class="flex-none w-[calc(100%_-_132px)] md:w-[calc(100%_-_166px)] overflow-hidden flex items-center justify-center" style="height:' + heightPx + 'px">' +
       '<svg viewBox="' + viewBox + '" class="w-full h-auto block" role="presentation" focusable="false">' +
       '<use href="#ing-' + item.symbol + '"></use>' +
@@ -174,14 +134,9 @@
     );
   }
 
-  /**
-   * Calcule une hauteur de couche et un espacement communs à tout
-   * l'empilement, à partir de la place réellement disponible dans la
-   * modale (mesurée en direct) et du nombre de couches à afficher. Un
-   * burger à peu d'ingrédients obtient donc des couches plus hautes qu'un
-   * burger à 7 ingrédients, puisque les deux se partagent le même budget
-   * de hauteur total.
-   */
+  // Hauteur de couche + espacement communs, calculés à partir de la place
+  // réellement disponible et du nombre de couches (donc plus hauts pour un
+  // burger à peu d'ingrédients).
   function computeLayerSizing(layerCount) {
     var isDesktop = MEDIA_MD.matches;
     var vhRatio = isDesktop ? PANEL_MAX_VH_RATIO_DESKTOP : PANEL_MAX_VH_RATIO_MOBILE;
@@ -196,10 +151,8 @@
     var headerStyles = getComputedStyle(headerEl);
     var headerMarginBottom = parseFloat(headerStyles.marginBottom) || 0;
     var headerHeight = headerEl.getBoundingClientRect().height + headerMarginBottom;
-    // Marge de sécurité pour absorber les arrondis (hauteur/gap arrondis au
-    // pixel près, écarts de sous-pixel entre navigateurs) : sans elle,
-    // l'empilement peut dépasser le budget de 2-4px et déclencher un
-    // scroll malgré un calcul "exact".
+    // Absorbe les écarts d'arrondi (pixel, sous-pixel) qui pourraient sinon
+    // déclencher un scroll malgré un calcul "exact".
     var SAFETY_MARGIN = 14;
 
     var available = viewportBudget - padTop - padBottom - headerHeight - SAFETY_MARGIN;
@@ -217,10 +170,8 @@
   function openBurger(key, trigger) {
     var burger = BURGERS[key];
     if (!burger) return;
-    // Dans un vrai burger la protéine (premier ingrédient du texte) est au
-    // fond, contre le pain du dessous — pas juste sous le pain du dessus.
-    // On inverse donc l'ordre des ingrédients entre les deux pains, qui
-    // restent fixes en haut et en bas.
+    // La protéine (premier ingrédient du texte) doit finir contre le pain
+    // du dessous, pas juste sous le pain du dessus : on inverse l'ordre.
     var reversedIngredients = burger.ingredients.slice().reverse();
     var stack = [BUN_TOP].concat(reversedIngredients, [SAUCE], [BUN_BOTTOM]);
     var step = 70;
@@ -234,8 +185,7 @@
     backdrop.classList.add('flex');
     document.body.classList.add('overflow-hidden');
 
-    // La modale doit être affichée (donc mise en page) avant de mesurer la
-    // place réellement disponible.
+    // Doit être affichée avant ce calcul, qui mesure la place réelle.
     var sizing = computeLayerSizing(n);
     layersEl.style.gap = sizing.gap + 'px';
     layersEl.innerHTML = stack

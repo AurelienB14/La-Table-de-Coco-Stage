@@ -26,10 +26,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Figtree:wght@400;600;700&display=swap">
 <link rel="stylesheet" href="assets/css/style.css">
 <style>
-  /* Animation d'empilement du burger dans la modale : chaque couche
-     "atterrit" avec un léger fondu + glissement. Le délai (voir
-     style="animation-delay:...", posé par assets/js/burger-stack.js) est
-     appliqué par couche pour un effet de pose du bas vers le haut. */
+  /* Délai posé par assets/js/burger-stack.js (animation-delay inline). */
   @keyframes bstack-land {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -37,9 +34,6 @@
   .bstack-layer {
     animation: bstack-land 320ms ease both;
   }
-  /* Ombre portée sous chaque illustration : suit le contour réel de la
-     forme (au lieu d'un rectangle générique) pour renforcer l'effet
-     d'empilement 3D entre les couches. */
   .bstack-layer svg {
     filter: drop-shadow(0 3px 2px rgba(20, 16, 10, 0.3));
   }
@@ -49,10 +43,7 @@
   }
   .burger-modal-panel {
     animation: bmodal-pop 200ms ease both;
-    /* Réserve toujours la place de la barre de défilement verticale, même
-       quand elle n'est pas nécessaire (burgers à moins de couches) : sans
-       ça, la largeur utile de chaque couche varie d'un burger à l'autre
-       selon que la modale scrolle ou non. */
+    /* Sans ça, la largeur de couche varie selon que la modale scrolle ou non. */
     scrollbar-gutter: stable;
   }
 </style>
@@ -61,10 +52,7 @@
 
 <!-- INCLUDE:nav -->
 
-<!-- Bibliothèque d'illustrations SVG des ingrédients, définie une seule
-     fois et réutilisée pour tous les burgers via <use> (voir
-     assets/js/burger-stack.js), pour ne pas redessiner un ingrédient
-     partagé (pain, oignons, fromage...) à chaque burger. -->
+<!-- Symboles SVG des ingrédients, réutilisés via <use> par assets/js/burger-stack.js. -->
 <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
   <defs>
     <linearGradient id="grad-bun-top" x1="0" y1="0" x2="0" y2="1">
@@ -190,17 +178,11 @@
       </g>
     </symbol>
     <symbol id="ing-egg" viewBox="0 0 300 34">
-      <!-- Aplati par rapport à l'original (viewBox 44 -> 34, jaune rond ->
-           ovale) : dans une bande fine, un jaune parfaitement rond était
-           rogné en bas alors que les autres ingrédients (plus plats de
-           nature) ne l'étaient pas. -->
       <path d="M4,15.5 C0,3.1 60,-3.1 150,1.5 C240,-3.1 300,3.1 296,15.5 C300,27.8 240,35.5 150,32.5 C60,35.5 0,27.8 4,15.5 Z" fill="url(#grad-egg-white)"/>
       <ellipse cx="150" cy="16.2" rx="14" ry="9" fill="url(#grad-egg-yolk)"/>
       <ellipse cx="144" cy="11.6" rx="4" ry="2.6" fill="#FCE3A0" opacity="0.85"/>
     </symbol>
     <symbol id="ing-onion" viewBox="0 0 300 30">
-      <!-- Oignon ROUGE : même forme en anneaux qu'avant, palette
-           violette/pourpre plutôt que vert-de-gris. -->
       <rect x="0" y="9" width="300" height="12" rx="6" fill="url(#grad-onion)"/>
       <g fill="none" stroke="#7D3F72" stroke-width="1.4" opacity="0.85">
         <ellipse cx="36" cy="15" rx="15" ry="8.5"/>
@@ -246,16 +228,11 @@
       </g>
     </symbol>
     <symbol id="ing-sauce" viewBox="0 0 300 20">
-      <!-- Fine bande de nappage/coulis, commune à tous les burgers : trait
-           en zigzag façon flacon souple, sur une base translucide. -->
       <rect x="2" y="6" width="296" height="8" rx="4" fill="url(#grad-sauce)" opacity="0.25"/>
       <path d="M6,10 Q20,2 34,10 T62,10 T90,10 T118,10 T146,10 T174,10 T202,10 T230,10 T258,10 T286,10" fill="none" stroke="url(#grad-sauce)" stroke-width="3.5" stroke-linecap="round"/>
       <path d="M6,10 Q20,2 34,10 T62,10 T90,10 T118,10 T146,10 T174,10 T202,10 T230,10 T258,10 T286,10" fill="none" stroke="#F3C08A" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/>
     </symbol>
 
-    <!-- Icône (pas une photo) utilisée sur les emplacements cliquables de
-         chaque burger, à la place de l'ancien carré vide : un simple
-         pictogramme burger en aplat, coloré via currentColor. -->
     <symbol id="icon-burger" viewBox="0 0 32 32">
       <path d="M4,13 C4,7 9,4 16,4 C23,4 28,7 28,13 Z" fill="currentColor"/>
       <rect x="4" y="15.5" width="24" height="3" rx="1.5" fill="currentColor"/>
@@ -453,9 +430,6 @@
 
 <!-- INCLUDE:footer -->
 
-<!-- Modale unique de composition de burger : réutilisée pour les 7 burgers,
-     remplie dynamiquement par assets/js/burger-stack.js selon le
-     data-burger cliqué. -->
 <div id="burger-modal-backdrop" class="hidden fixed inset-0 z-[1000] items-center justify-center p-4 md:p-8" style="background:rgba(20,16,10,0.6)">
   <div id="burger-modal-panel" class="burger-modal-panel relative w-full max-w-[92vw] md:max-w-[720px] max-h-[85vh] overflow-y-auto rounded-[24px] bg-bg elev-md px-7 py-5 md:px-9 md:py-9" role="dialog" aria-modal="true" aria-labelledby="burger-modal-title">
     <button type="button" id="burger-modal-close" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-ink/80 text-white flex items-center justify-center text-lg leading-none cursor-pointer hover:bg-ink" aria-label="Fermer la composition">&times;</button>

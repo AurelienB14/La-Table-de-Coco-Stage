@@ -1,10 +1,5 @@
-/**
- * Nav/footer markup is inlined into each page at build time (see
- * scripts/build-html.js) so it's present in the raw HTML for crawlers that
- * don't run JavaScript. This script only wires up interactive behaviour on
- * top of that already-rendered markup: the mobile hamburger menu and the
- * active-page highlight in the nav.
- */
+// Nav/footer are inlined at build time (scripts/build-html.js), not here:
+// this only wires up the mobile menu and the active-page nav highlight.
 (function () {
   function markActiveLink(root, page) {
     root.querySelectorAll('[data-nav-link]').forEach(function (link) {
